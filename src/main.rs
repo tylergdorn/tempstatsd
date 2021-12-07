@@ -114,7 +114,7 @@ struct Log {
 
 impl std::fmt::Display for Log {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "sensor: {} message: {}", self.sensor, self.message)
+        write!(f, "sensor: {}, message: {},", self.sensor, self.message)
     }
 }
 
@@ -122,7 +122,7 @@ impl std::fmt::Display for Stats {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
             f,
-            "sensor: {} humidity: {} temperature: {}",
+            "sensor: {}, humidity: {}, temperature: {}",
             self.sensor, self.humidity, self.temp
         )
     }
