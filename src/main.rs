@@ -34,12 +34,12 @@ async fn main() {
         .and_then(post_temp);
 
     let post_path = warp::post().and(error_path).or(temperature_stats);
-    warp::serve(post_path).run(([127, 0, 0, 1], 3030)).await;
+    warp::serve(post_path).run(([0, 0, 0, 0], 3030)).await;
 }
 
 fn init_tables(mut conn: PoolConn) -> Result<()> {
     let tx = conn.transaction()?;
-    tx.execute("CREATE TABLE IF NOT EXISTS temperature (sensor TEXT, temperature REAL, humidity REAL, time TEXT)", params![])?;
+    tx.execute("CREATE TABLE IF NOT EXISTS temperature (sensor TEXT, temperature NUMERIC, humidity NUMERIC, time TEXT)", params![])?;
     tx.execute(
         "CREATE TABLE IF NOT EXISTS logs (sensor TEXT, message TEXT, time TEXT)",
         params![],
@@ -102,7 +102,7 @@ fn with_pool(
 fn insert_temp(conn: PoolConn, s: &Stats) -> Result<usize, rusqlite::Error> {
     conn.execute(
         "INSERT INTO temperature (sensor, temperature, humidity, time) VALUES (?1, ?2, ?3, datetime('now'))",
-        params![s.sensor, s.humidity, s.temp],
+        params![s.sensor, s.temp, s.humidity],
     )
 }
 
